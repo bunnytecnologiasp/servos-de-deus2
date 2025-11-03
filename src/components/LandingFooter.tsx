@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Facebook, Instagram, Youtube, Whatsapp } from 'lucide-react';
+import { Facebook, Instagram, Youtube, MessageSquare } from 'lucide-react'; // Whatsapp substituído por MessageSquare
 
 const LandingFooter: React.FC = () => {
   const platformLinks = [
@@ -33,7 +33,7 @@ const LandingFooter: React.FC = () => {
             <a href="#" aria-label="Facebook" className="text-gray-400 hover:text-white transition-colors"><Facebook className="h-5 w-5" /></a>
             <a href="#" aria-label="Instagram" className="text-gray-400 hover:text-white transition-colors"><Instagram className="h-5 w-5" /></a>
             <a href="#" aria-label="YouTube" className="text-gray-400 hover:text-white transition-colors"><Youtube className="h-5 w-5" /></a>
-            <a href="#" aria-label="WhatsApp" className="text-gray-400 hover:text-white transition-colors"><Whatsapp className="h-5 w-5" /></a>
+            <a href="#" aria-label="WhatsApp" className="text-gray-400 hover:text-white transition-colors"><MessageSquare className="h-5 w-5" /></a>
           </div>
         </div>
 
