@@ -14,7 +14,7 @@ interface AuthGuardProps {
 const fetchUserProfile = async (userId: string): Promise<Profile | null> => {
   const { data, error } = await supabase
     .from("profiles")
-    .select("username")
+    .select("username") // Apenas buscando o username
     .eq("id", userId)
     .single();
 
@@ -22,6 +22,7 @@ const fetchUserProfile = async (userId: string): Promise<Profile | null> => {
     console.error("Error fetching profile in AuthGuard:", error);
     return null;
   }
+  // O retorno é um objeto parcial do tipo Profile, mas contém o campo username
   return data as Profile | null;
 };
 
