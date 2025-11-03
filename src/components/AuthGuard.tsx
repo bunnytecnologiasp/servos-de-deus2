@@ -3,11 +3,28 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Session } from "@supabase/supabase-js";
 import { Loader2 } from "lucide-react";
+import { Profile } from "@/types/profile"; // Importando o tipo Profile
 
 interface AuthGuardProps {
   children: React.ReactNode;
   isProtected: boolean;
 }
+
+// Função auxiliar para buscar o perfil
+const fetchUserProfile = async (userId: string): Promise<Profile | null> => {
+  const { data, error } = await supabase
+    .from("profiles")
+    .select("username")
+    .eq("id", userId)
+    .single();
+
+  if (error && error.code !== 'PGRST116') {
+    console.error("Error fetching profile in AuthGuard:", error);
+    return null;
+  }
+  return data as Profile | null;
+};
+
 
 const AuthGuard: React.FC<AuthGuardProps> = ({ children, isProtected }) => {
   const [session, setSession] = useState<Session | null>(null);
@@ -16,38 +33,62 @@ const AuthGuard: React.FC<AuthGuardProps> = ({ children, isProtected }) => {
   const location = useLocation();
 
   useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, currentSession) => {
-      setSession(currentSession);
-      setLoading(false);
+    let isMounted = true;
+    
+    const handleAuthChange = async (currentSession: Session | null) => {
+      if (!isMounted) return;
 
+      setSession(currentSession);
       const isAuthenticated = !!currentSession;
       const isLoginPage = location.pathname === "/login";
+      const isIndexPage = location.pathname === "/";
 
-      if (isProtected && !isAuthenticated && !isLoginPage) {
-        // If trying to access a protected route without authentication, redirect to login
-        navigate("/login", { replace: true });
-      } else if (isAuthenticated && isLoginPage) {
-        // If authenticated and trying to access login, redirect to dashboard
-        navigate("/dashboard", { replace: true });
+      if (isAuthenticated) {
+        if (isLoginPage) {
+          // Authenticated user trying to access login -> redirect to dashboard
+          navigate("/dashboard", { replace: true });
+          return;
+        }
+        
+        if (isIndexPage) {
+          // Authenticated user trying to access index ('/') -> check profile for username
+          const profile = await fetchUserProfile(currentSession.user.id);
+          
+          if (profile?.username) {
+            // Redirect to their public page
+            navigate(`/u/${profile.username}`, { replace: true });
+          } else {
+            // If no username is set, redirect to dashboard to set it up
+            navigate("/dashboard", { replace: true });
+          }
+          return;
+        }
+      } else {
+        if (isProtected && !isLoginPage) {
+          // Unauthenticated user trying to access protected route -> redirect to login
+          navigate("/login", { replace: true });
+          return;
+        }
       }
-    });
-
-    // Check initial session
-    supabase.auth.getSession().then(({ data: { session: initialSession } }) => {
-      setSession(initialSession);
-      setLoading(false);
       
-      const isAuthenticated = !!initialSession;
-      const isLoginPage = location.pathname === "/login";
+      setLoading(false);
+    };
 
-      if (isProtected && !isAuthenticated && !isLoginPage) {
-        navigate("/login", { replace: true });
-      } else if (isAuthenticated && isLoginPage) {
-        navigate("/dashboard", { replace: true });
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, currentSession) => {
+      if (event === 'INITIAL_SESSION' || event === 'SIGNED_IN' || event === 'SIGNED_OUT') {
+        handleAuthChange(currentSession);
       }
     });
 
-    return () => subscription.unsubscribe();
+    // Check initial session immediately
+    supabase.auth.getSession().then(({ data: { session: initialSession } }) => {
+      handleAuthChange(initialSession);
+    });
+
+    return () => {
+      isMounted = false;
+      subscription.unsubscribe();
+    };
   }, [navigate, isProtected, location.pathname]);
 
   if (loading) {
