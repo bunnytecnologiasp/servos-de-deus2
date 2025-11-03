@@ -6,7 +6,8 @@ import LandingFooter from "@/components/LandingFooter";
 import FeatureCard from "@/components/FeatureCard";
 import PricingCard from "@/components/PricingCard";
 import TestimonialLandingCard from "@/components/TestimonialLandingCard";
-import { Check, Smartphone, User, ShoppingCart, Calendar, Search, Layers, ArrowRight } from "lucide-react";
+import UsernameAvailabilityChecker from "@/components/UsernameAvailabilityChecker"; // Novo componente
+import { Check, Smartphone, User, ShoppingCart, Calendar, Search, Layers } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 // Dados Mock para a Landing Page
@@ -118,13 +119,9 @@ const Index = () => {
                 Una sua vida profissional e ministerial em um mini site personalizado. Perfeito para pastores, líderes e profissionais cristãos que querem centralizar sua presença online.
               </p>
               
-              <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4 pt-4">
-                <Button asChild className="bg-lp-teal hover:bg-lp-teal-light text-white text-lg font-semibold px-8 py-6 rounded-full shadow-lg transition-transform transform hover:scale-[1.02]">
-                  <Link to="/login">Criar Meu Perfil Grátis</Link>
-                </Button>
-                <Button variant="outline" className="border-2 border-lp-teal text-lp-teal hover:bg-lp-teal/10 text-lg font-semibold px-8 py-6 rounded-full shadow-lg transition-transform transform hover:scale-[1.02]">
-                  Ver Demonstração
-                </Button>
+              {/* Campo de Busca de Username */}
+              <div className="pt-4">
+                <UsernameAvailabilityChecker />
               </div>
               
               <div className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-gray-600 dark:text-gray-400 pt-4">
