@@ -221,7 +221,7 @@ const Dashboard = () => {
 
           <TabsContent value="links" className="mt-6">
             <div className="flex justify-end mb-4">
-              <AddLinkDialog onSuccess={() => { refetchAllLinks(); refetchSections(); }} />
+              <AddLinkDialog refetch={() => { refetchAllLinks(); refetchSections(); }} />
             </div>
             
             {linkSections.length === 0 ? (
