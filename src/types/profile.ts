@@ -9,6 +9,7 @@ export interface Profile {
   address: string | null;
   sales_pitch: string | null;
   username: string | null; // Novo campo
+  is_visible_in_directory: boolean | null; // Novo campo
   email?: string; // Adicionando email (opcional, pois não está no DB, mas é injetado no Dashboard)
 }
 
@@ -22,4 +23,5 @@ export interface PublicProfile {
   address: string | null;
   sales_pitch: string | null;
   username: string | null; // Novo campo
+  is_visible_in_directory: boolean | null; // Novo campo
 }

@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import PublicPage from "./pages/PublicPage"; // Importando PublicPage
+import Directory from "./pages/Directory"; // Importando Directory
 import NotFound from "./pages/NotFound";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard"; // Importando Dashboard
@@ -21,6 +22,9 @@ const App = () => (
         <Routes>
           {/* Public Landing Page */}
           <Route path="/" element={<AuthGuard isProtected={false}><Index /></AuthGuard>} />
+          
+          {/* Public Directory Page */}
+          <Route path="/directory" element={<AuthGuard isProtected={false}><Directory /></AuthGuard>} />
           
           {/* Dynamic Public Profile Page */}
           <Route path="/u/:username" element={<AuthGuard isProtected={false}><PublicPage /></AuthGuard>} />

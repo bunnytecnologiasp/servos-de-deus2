@@ -5,6 +5,7 @@ import * as z from "zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { Switch } from "@/components/ui/switch"; // Importando Switch
 import {
   Form,
   FormControl,
@@ -41,6 +42,8 @@ const profileSchema = z.object({
     .optional()
     .nullable()
     .transform(e => e === "" ? null : e),
+    
+  is_visible_in_directory: z.boolean().default(false), // Novo campo
 });
 
 type ProfileFormValues = z.infer<typeof profileSchema>;
@@ -64,7 +67,8 @@ const ProfileSettingsForm: React.FC<ProfileSettingsFormProps> = ({ initialProfil
       store_hours: getSafeValue(initialProfile?.store_hours),
       address: getSafeValue(initialProfile?.address),
       sales_pitch: getSafeValue(initialProfile?.sales_pitch),
-      username: getSafeValue(initialProfile?.username), // Novo valor padrão
+      username: getSafeValue(initialProfile?.username),
+      is_visible_in_directory: initialProfile?.is_visible_in_directory ?? false, // Novo valor padrão
     },
     mode: "onChange",
   });
@@ -79,7 +83,8 @@ const ProfileSettingsForm: React.FC<ProfileSettingsFormProps> = ({ initialProfil
         store_hours: getSafeValue(initialProfile.store_hours),
         address: getSafeValue(initialProfile.address),
         sales_pitch: getSafeValue(initialProfile.sales_pitch),
-        username: getSafeValue(initialProfile.username), // Resetando username
+        username: getSafeValue(initialProfile.username),
+        is_visible_in_directory: initialProfile.is_visible_in_directory ?? false,
       });
     }
   }, [initialProfile, form]);
@@ -125,7 +130,8 @@ const ProfileSettingsForm: React.FC<ProfileSettingsFormProps> = ({ initialProfil
       store_hours: values.store_hours || null,
       address: values.address || null,
       sales_pitch: values.sales_pitch || null,
-      username: values.username || null, // Salvando username
+      username: values.username || null,
+      is_visible_in_directory: values.is_visible_in_directory, // Salvando novo campo
       updated_at: new Date().toISOString(),
     };
 
@@ -197,6 +203,28 @@ const ProfileSettingsForm: React.FC<ProfileSettingsFormProps> = ({ initialProfil
                     </div>
                   </FormControl>
                   <FormMessage />
+                </FormItem>
+              )}
+            />
+            
+            {/* Novo Switch para Visibilidade no Diretório */}
+            <FormField
+              control={form.control}
+              name="is_visible_in_directory"
+              render={({ field }) => (
+                <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+                  <div className="space-y-0.5">
+                    <FormLabel>Visível no Diretório</FormLabel>
+                    <p className="text-sm text-muted-foreground">
+                      Permite que seu perfil seja encontrado na página de Diretório (Disponível apenas para planos Intermediário e Premium).
+                    </p>
+                  </div>
+                  <FormControl>
+                    <Switch
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                    />
+                  </FormControl>
                 </FormItem>
               )}
             />

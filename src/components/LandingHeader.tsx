@@ -7,6 +7,7 @@ const LandingHeader: React.FC = () => {
   const navItems = [
     { name: 'Recursos', href: '#' },
     { name: 'Planos', href: '#planos' },
+    { name: 'Diretório', href: '/directory' }, // Novo link
     { name: 'Depoimentos', href: '#depoimentos' },
     { name: 'Contato', href: '#' },
   ];

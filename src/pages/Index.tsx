@@ -23,31 +23,29 @@ const features = [
 const pricingPlans = [
   {
     title: "Básico",
-    price: "R$ 29",
+    price: "Grátis",
     subtitle: "Ideal para começar sua presença digital",
     features: [
       { text: "Mini site personalizado", included: true },
       { text: "Links limitados", included: true },
-      { text: "Templates básicos", included: true },
       { text: "Suporte por email", included: true },
       { text: "Banner de publicidade", included: true },
       { text: "Visibilidade no diretório", included: false },
       { text: "Customização de cores", included: false },
       { text: "Estatísticas detalhadas", included: false },
     ],
-    buttonText: "Começar Agora",
+    buttonText: "Começar Grátis",
     buttonVariant: 'outline' as const,
   },
   {
     title: "Intermediário",
-    price: "R$ 59",
-    subtitle: "Para quem quer mais visibilidade e recursos",
+    price: "R$ 9,90",
+    subtitle: "R$ 95,04 anual (Economize 20%)",
     features: [
       { text: "Tudo do plano Básico", included: true },
-      { text: "Mais templates disponíveis", included: true },
       { text: "Customização de cores", included: true },
       { text: "Estatísticas detalhadas", included: true },
-      { text: "Visibilidade no diretório (opcional)", included: true },
+      { text: "Visibilidade no diretório", included: true },
       { text: "Suporte prioritário", included: true },
       { text: "Loja virtual", included: false },
       { text: "Sistema de agendamento", included: false },
@@ -59,8 +57,8 @@ const pricingPlans = [
   },
   {
     title: "Premium",
-    price: "R$ 99",
-    subtitle: "Solução completa para profissionais",
+    price: "R$ 19,90",
+    subtitle: "R$ 179,10 anual (Economize 25%)",
     features: [
       { text: "Tudo do plano Intermediário", included: true },
       { text: "Loja virtual integrada", included: true },
