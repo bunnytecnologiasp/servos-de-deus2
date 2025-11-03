@@ -144,14 +144,17 @@ const Dashboard = () => {
   const photoSections = sections?.filter(s => s.type === 'photo_slider' || s.type === 'photo_grid') || [];
   const contentUrlSections = sections?.filter(s => s.type === 'video' || s.type === 'map') || [];
   const testimonialSections = sections?.filter(s => s.type === 'testimonials') || [];
+  
+  // Determine the public URL based on the user's username
+  const publicUrl = profile?.username ? `/u/${profile.username}` : '/';
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 p-4 sm:p-8">
       <header className="flex justify-between items-center mb-8">
         <h1 className="text-3xl font-bold text-foreground">Painel de Controle</h1>
         <div className="flex space-x-2">
-          <Button asChild variant="outline" className="flex items-center">
-            <RouterLink to="/">
+          <Button asChild variant="outline" className="flex items-center" disabled={!profile?.username}>
+            <RouterLink to={publicUrl} target="_blank">
               <Home className="h-4 w-4 mr-2" />
               Ver Página Pública
             </RouterLink>
