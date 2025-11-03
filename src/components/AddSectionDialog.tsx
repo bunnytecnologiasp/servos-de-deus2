@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { PlusCircle, Link, Image, MessageSquare, Video, MapPin } from "lucide-react";
+import { PlusCircle, Link, Image, MessageSquare, Video, MapPin, Info } from "lucide-react";
 import { SectionType } from "@/types/content";
 import { supabase } from "@/integrations/supabase/client";
 import { showError, showSuccess } from "@/utils/toast";
@@ -55,6 +55,12 @@ const sectionOptions: SectionOption[] = [
     title: 'Mapa Incorporado',
     description: 'Exibe um mapa do Google Maps.',
     icon: <MapPin className="h-6 w-6 text-green-600" />,
+  },
+  {
+    type: 'info_card',
+    title: 'Informações da Loja/Contato',
+    description: 'Exibe Horário, Endereço e Pitch de Vendas.',
+    icon: <Info className="h-6 w-6 text-cyan-500" />,
   },
 ];
 

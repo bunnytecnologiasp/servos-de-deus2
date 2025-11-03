@@ -1,4 +1,4 @@
-export type SectionType = 'links' | 'photo_slider' | 'photo_grid' | 'testimonials' | 'video' | 'map';
+export type SectionType = 'links' | 'photo_slider' | 'photo_grid' | 'testimonials' | 'video' | 'map' | 'info_card';
 
 export interface Section {
   id: string;

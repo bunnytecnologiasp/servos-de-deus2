@@ -260,6 +260,9 @@ const Index = () => {
       case 'map':
         if (!section.content_url) return null;
         return <MapSection mapEmbedUrl={section.content_url} />;
+      case 'info_card':
+        // Render the InfoCardSection using the profile data
+        return <InfoCardSection profile={profile} />;
       default:
         return null;
     }
@@ -297,11 +300,8 @@ const Index = () => {
             </div>
           ))}
           
-          {/* Static Info Card Section (After all dynamic sections) */}
-          <InfoCardSection profile={profile} />
-
           {/* Fallback: If no sections are defined, show nothing */}
-          {(!sections || sections.length === 0) && !profile.store_hours && !profile.address && !profile.sales_pitch && (
+          {(!sections || sections.length === 0) && (
             <p className="text-center text-muted-foreground">Nenhum conteúdo ativo encontrado.</p>
           )}
         </div>
