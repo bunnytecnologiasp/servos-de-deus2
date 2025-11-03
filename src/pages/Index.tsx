@@ -86,7 +86,7 @@ const fetchAllActiveLinksGrouped = async (sectionIds: string[]): Promise<Section
     .select(`
       section_id,
       order_index,
-      link:link_id (id, user_id, title, url, is_active, created_at)
+      link:link_id (id, user_id, title, url, is_active, text_color, background_color, created_at)
     `)
     .in("section_id", sectionIds) // Filtrar pelas seções ativas
     .eq("link.is_active", true); // Filter by active links
