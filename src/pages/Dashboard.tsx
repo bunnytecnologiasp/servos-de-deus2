@@ -70,21 +70,33 @@ const fetchUserTestimonials = async (): Promise<Testimonial[]> => {
   return data as Testimonial[];
 };
 
-// Fetching Profile
-const fetchUserProfile = async (): Promise<Profile | null> => {
-  const user = await supabase.auth.getUser();
-  if (!user.data.user) return null;
+// Novo tipo de retorno que inclui o email
+interface DashboardProfile extends Profile {
+    email: string;
+}
 
-  const { data, error } = await supabase
+// Fetching Profile
+const fetchUserProfile = async (): Promise<DashboardProfile | null> => {
+  const userResponse = await supabase.auth.getUser();
+  const user = userResponse.data.user;
+  
+  if (!user) return null;
+
+  const { data: profileData, error } = await supabase
     .from("profiles")
     .select("*")
-    .eq("id", user.data.user.id)
+    .eq("id", user.id)
     .single();
 
   if (error && error.code !== 'PGRST116') { // PGRST116 means 'no rows found'
     throw new Error(error.message);
   }
-  return data as Profile | null;
+  
+  // Combina os dados do perfil com o email do usuário
+  return {
+      ...(profileData as Profile),
+      email: user.email || "Email não disponível",
+  } as DashboardProfile;
 };
 
 const Dashboard = () => {
@@ -110,7 +122,7 @@ const Dashboard = () => {
     queryFn: fetchUserTestimonials,
   });
 
-  const { data: profile, isLoading: isLoadingProfile, error: errorProfile, refetch: refetchProfile } = useQuery<Profile | null>({
+  const { data: profile, isLoading: isLoadingProfile, error: errorProfile, refetch: refetchProfile } = useQuery<DashboardProfile | null>({
     queryKey: ["userProfile"],
     queryFn: fetchUserProfile,
   });

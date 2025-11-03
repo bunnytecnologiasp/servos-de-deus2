@@ -167,6 +167,15 @@ const ProfileSettingsForm: React.FC<ProfileSettingsFormProps> = ({ initialProfil
         
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 mt-6">
+            
+            <h3 className="text-lg font-semibold pt-4 border-t">Informações da Conta</h3>
+            <div className="space-y-4">
+                <div className="p-3 border rounded-md bg-muted/50">
+                    <FormLabel>Email de Cadastro</FormLabel>
+                    <p className="font-medium text-sm">{initialProfile?.email || 'Não disponível'}</p>
+                </div>
+            </div>
+
             <h3 className="text-lg font-semibold pt-4 border-t">Identificação Pública</h3>
             
             <FormField
