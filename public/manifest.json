@@ -1,0 +1,21 @@
+{
+  "name": "Elf Joplin Link Hub",
+  "short_name": "Elf Joplin",
+  "description": "Seu hub de links essenciais, fotos e informações.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#3e555a",
+  "theme_color": "#3e555a",
+  "icons": [
+    {
+      "src": "/logo.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/logo.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
