@@ -19,14 +19,20 @@
     --secondary: 210 40% 96.1%;
     --secondary-foreground: 222.2 47.4% 11.2%;
 
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
 
     --accent: 210 40% 96.1%;
     --accent-foreground: 222.2 47.4% 11.2%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
 
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
@@ -49,6 +55,12 @@
     --sidebar-border: 220 13% 91%;
 
     --sidebar-ring: 217.2 91.2% 59.8%;
+    
+    /* NOVAS CORES DA LANDING PAGE */
+    --lp-teal: 174 100% 30%; /* Cor principal: Verde-água */
+    --lp-teal-light: 174 100% 35%;
+    --lp-navy: 217 30% 17%; /* Cor do rodapé: Azul Marinho Escuro */
+    --lp-navy-light: 217 20% 25%;
   }
 
   .dark {
@@ -87,6 +99,12 @@
     --sidebar-accent-foreground: 240 4.8% 95.9%;
     --sidebar-border: 240 3.7% 15.9%;
     --sidebar-ring: 217.2 91.2% 59.8%;
+    
+    /* NOVAS CORES DA LANDING PAGE (Dark Mode) */
+    --lp-teal: 174 100% 35%;
+    --lp-teal-light: 174 100% 40%;
+    --lp-navy: 217 30% 17%;
+    --lp-navy-light: 217 20% 25%;
   }
 }
 

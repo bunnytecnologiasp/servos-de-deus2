@@ -62,6 +62,13 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+        // NOVAS CORES DA LANDING PAGE
+        lp: {
+          teal: "hsl(var(--lp-teal))",
+          "teal-light": "hsl(var(--lp-teal-light))",
+          navy: "hsl(var(--lp-navy))",
+          "navy-light": "hsl(var(--lp-navy-light))",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",
