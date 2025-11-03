@@ -31,7 +31,7 @@ const Login = () => {
               },
             }}
             theme="light"
-            view="sign_in" // Força a visualização de login
+            view="sign_in"
             redirectTo={window.location.origin + "/dashboard"}
             localization={{
               variables: {
@@ -40,22 +40,27 @@ const Login = () => {
                   password_label: 'Senha',
                   button_label: 'Entrar',
                   social_provider_text: 'Entrar com {{provider}}',
-                  link_text: '', // Removendo link_text para evitar navegação para outras views (como sign_up)
+                  link_text: 'Já tem uma conta? Faça login', // Mantendo o link de login
                   email_input_placeholder: 'seu@email.com',
                   password_input_placeholder: '••••••••',
                 },
-                // Removendo todas as outras views para garantir que apenas o login seja possível
                 forgotten_password: {
-                  link_text: '',
+                  link_text: '', // Mantendo desabilitado
                 },
                 update_password: {
-                  link_text: '',
+                  link_text: '', // Mantendo desabilitado
                 },
                 magic_link: {
-                  link_text: '',
+                  link_text: '', // Mantendo desabilitado
                 },
                 sign_up: {
-                  link_text: '',
+                  email_label: 'Email',
+                  password_label: 'Criar Senha',
+                  button_label: 'Cadastrar',
+                  social_provider_text: 'Cadastrar com {{provider}}',
+                  link_text: 'Não tem uma conta? Cadastre-se', // Reativando o link de cadastro
+                  email_input_placeholder: 'seu@email.com',
+                  password_input_placeholder: '••••••••',
                 }
               },
               lang: 'pt-BR',
