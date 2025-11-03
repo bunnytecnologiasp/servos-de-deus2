@@ -15,7 +15,16 @@ interface PhotoManagerProps {
   isLoading: boolean;
 }
 
+// Função auxiliar para obter o prefixo da URL pública do bucket 'photos'
+const getStoragePublicUrlPrefix = () => {
+    const { data } = supabase.storage.from('photos').getPublicUrl('');
+    // Retorna a URL base, removendo a barra final se existir
+    return data.publicUrl.replace(/\/$/, '');
+};
+
 const PhotoManager: React.FC<PhotoManagerProps> = ({ photos, refetch, isLoading }) => {
+  
+  const storagePrefix = React.useMemo(getStoragePublicUrlPrefix, []);
 
   const handleDelete = async (photo: Photo) => {
     // 1. Delete from database
@@ -30,10 +39,12 @@ const PhotoManager: React.FC<PhotoManagerProps> = ({ photos, refetch, isLoading 
     }
     
     // 2. If the URL is a Supabase Storage URL, attempt to delete the file as well
-    if (photo.url.includes('xanhpdnbtxawkauheghr.supabase.co/storage/v1/object/public/photos/')) {
+    if (photo.url.startsWith(storagePrefix)) {
       try {
         // Extract the file path from the public URL
-        const filePath = photo.url.split('photos/')[1];
+        // We need the path relative to the bucket root.
+        const filePath = photo.url.substring(storagePrefix.length + 1); // +1 for the leading slash
+        
         if (filePath) {
           const { error: storageError } = await supabase.storage
             .from('photos')
