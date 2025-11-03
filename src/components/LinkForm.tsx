@@ -26,6 +26,8 @@ const linkSchema = z.object({
   title: z.string().min(1, "O título é obrigatório."),
   url: z.string().url("URL inválida. Certifique-se de incluir http:// ou https://."),
   is_active: z.boolean().default(true),
+  text_color: z.string().regex(/^#([0-9A-F]{3}){1,2}$/i, "Cor de texto inválida."),
+  background_color: z.string().regex(/^#([0-9A-F]{3}){1,2}$/i, "Cor de fundo inválida."),
   section_ids: z.array(z.string()).min(1, "Selecione pelo menos uma seção de links."),
 });
 
@@ -48,6 +50,8 @@ const LinkForm: React.FC<LinkFormProps> = ({ initialData, onSuccess, onClose }) 
       title: initialData?.title || "",
       url: initialData?.url || "",
       is_active: initialData?.is_active ?? true,
+      text_color: initialData?.text_color || "#ffffff", // Default white
+      background_color: initialData?.background_color || "#3e555a", // Default dark green
       section_ids: initialData?.section_ids || [],
     },
   });
@@ -85,6 +89,8 @@ const LinkForm: React.FC<LinkFormProps> = ({ initialData, onSuccess, onClose }) 
       title: values.title,
       url: values.url,
       is_active: values.is_active,
+      text_color: values.text_color,
+      background_color: values.background_color,
       user_id: userId,
     };
 
@@ -201,6 +207,35 @@ const LinkForm: React.FC<LinkFormProps> = ({ initialData, onSuccess, onClose }) 
             </FormItem>
           )}
         />
+        
+        <div className="grid grid-cols-2 gap-4">
+            <FormField
+              control={form.control}
+              name="background_color"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Cor de Fundo</FormLabel>
+                  <FormControl>
+                    <Input type="color" className="h-10 p-1" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="text_color"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Cor do Texto</FormLabel>
+                  <FormControl>
+                    <Input type="color" className="h-10 p-1" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+        </div>
 
         <FormField
           control={form.control}

@@ -4,6 +4,8 @@ export interface Link {
   title: string;
   url: string;
   is_active: boolean;
+  text_color: string;
+  background_color: string;
   created_at: string;
 }
 
