@@ -10,11 +10,11 @@ interface AuthGuardProps {
   isProtected: boolean;
 }
 
-// Função auxiliar para buscar o perfil
+// Função auxiliar para buscar o perfil (mantida, mas não usada para redirecionamento de '/')
 const fetchUserProfile = async (userId: string): Promise<Profile | null> => {
   const { data, error } = await supabase
     .from("profiles")
-    .select("username") // Apenas buscando o username
+    .select("username")
     .eq("id", userId)
     .single();
 
@@ -42,7 +42,6 @@ const AuthGuard: React.FC<AuthGuardProps> = ({ children, isProtected }) => {
       setSession(currentSession);
       const isAuthenticated = !!currentSession;
       const isLoginPage = location.pathname === "/login";
-      const isIndexPage = location.pathname === "/";
 
       if (isAuthenticated) {
         if (isLoginPage) {
@@ -50,20 +49,8 @@ const AuthGuard: React.FC<AuthGuardProps> = ({ children, isProtected }) => {
           navigate("/dashboard", { replace: true });
           return;
         }
-        
-        if (isIndexPage) {
-          // Authenticated user trying to access index ('/') -> check profile for username
-          const profile = await fetchUserProfile(currentSession.user.id);
-          
-          if (profile?.username) {
-            // Redirect to their public page
-            navigate(`/u/${profile.username}`, { replace: true });
-          } else {
-            // If no username is set, redirect to dashboard to set it up
-            navigate("/dashboard", { replace: true });
-          }
-          return;
-        }
+        // Se estiver autenticado e não estiver na página de login, permite o acesso.
+        // Rotas públicas (como '/') são permitidas.
       } else {
         if (isProtected && !isLoginPage) {
           // Unauthenticated user trying to access protected route -> redirect to login
