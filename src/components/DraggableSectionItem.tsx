@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 import { useDrag, useDrop, XYCoord } from 'react-dnd';
 import { Section, SectionType } from "@/types/content";
 import { Button } from "@/components/ui/button";
-import { Trash2, GripVertical, ToggleLeft, ToggleRight, Link, Image, MessageSquare, Video, MapPin } from "lucide-react";
+import { Trash2, GripVertical, ToggleLeft, ToggleRight, Link, Image, MessageSquare, Video, MapPin, Info } from "lucide-react";
 import { cn } from "@/lib/utils";
 import DeleteConfirmationDialog from './DeleteConfirmationDialog'; // Importando
 
@@ -37,6 +37,8 @@ const getSectionIcon = (type: SectionType) => {
       return <Video className="h-5 w-5 text-red-600" />;
     case 'map':
       return <MapPin className="h-5 w-5 text-green-600" />;
+    case 'info_card':
+      return <Info className="h-5 w-5 text-cyan-500" />;
     default:
       return null;
   }
@@ -56,6 +58,8 @@ const getSectionTitle = (type: SectionType) => {
       return 'Vídeo Incorporado';
     case 'map':
       return 'Mapa Incorporado';
+    case 'info_card':
+      return 'Informações da Loja/Contato';
     default:
       return 'Seção Desconhecida';
   }
