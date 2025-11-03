@@ -20,6 +20,9 @@ import { Profile } from "@/types/profile";
 import { Loader2 } from "lucide-react";
 import AvatarUploader from "./AvatarUploader"; // Importando o novo componente
 
+// Regex para garantir que o username seja minúsculo, sem espaços e contenha apenas letras, números, hífens ou underscores.
+const usernameRegex = /^[a-z0-9_-]{3,20}$/;
+
 const profileSchema = z.object({
   first_name: z.string().min(1, "O nome é obrigatório."),
   last_name: z.string().optional().nullable(),
@@ -29,6 +32,15 @@ const profileSchema = z.object({
   store_hours: z.string().max(255, "O horário deve ter no máximo 255 caracteres.").optional().nullable(),
   address: z.string().max(255, "O endereço deve ter no máximo 255 caracteres.").optional().nullable(),
   sales_pitch: z.string().max(500, "O texto de vendas deve ter no máximo 500 caracteres.").optional().nullable(),
+  
+  // Campo Username
+  username: z.string()
+    .min(3, "O nome de usuário deve ter pelo menos 3 caracteres.")
+    .max(20, "O nome de usuário deve ter no máximo 20 caracteres.")
+    .regex(usernameRegex, "O nome de usuário deve ser minúsculo, sem espaços, e pode conter apenas letras, números, hífens (-) ou underscores (_).")
+    .optional()
+    .nullable()
+    .transform(e => e === "" ? null : e),
 });
 
 type ProfileFormValues = z.infer<typeof profileSchema>;
@@ -49,10 +61,10 @@ const ProfileSettingsForm: React.FC<ProfileSettingsFormProps> = ({ initialProfil
       first_name: getSafeValue(initialProfile?.first_name),
       last_name: getSafeValue(initialProfile?.last_name),
       bio: getSafeValue(initialProfile?.bio),
-      // Novos valores padrão
       store_hours: getSafeValue(initialProfile?.store_hours),
       address: getSafeValue(initialProfile?.address),
       sales_pitch: getSafeValue(initialProfile?.sales_pitch),
+      username: getSafeValue(initialProfile?.username), // Novo valor padrão
     },
     mode: "onChange",
   });
@@ -64,10 +76,10 @@ const ProfileSettingsForm: React.FC<ProfileSettingsFormProps> = ({ initialProfil
         first_name: getSafeValue(initialProfile.first_name),
         last_name: getSafeValue(initialProfile.last_name),
         bio: getSafeValue(initialProfile.bio),
-        // Novos campos
         store_hours: getSafeValue(initialProfile.store_hours),
         address: getSafeValue(initialProfile.address),
         sales_pitch: getSafeValue(initialProfile.sales_pitch),
+        username: getSafeValue(initialProfile.username), // Resetando username
       });
     }
   }, [initialProfile, form]);
@@ -80,6 +92,30 @@ const ProfileSettingsForm: React.FC<ProfileSettingsFormProps> = ({ initialProfil
       showError("Erro de autenticação: Usuário não encontrado.");
       return;
     }
+    
+    // 1. Check for username uniqueness if it changed
+    if (values.username && values.username !== initialProfile?.username) {
+        const { data, error } = await supabase
+            .from('profiles')
+            .select('id')
+            .eq('username', values.username)
+            .neq('id', userId) // Excluir o próprio usuário
+            .limit(1);
+            
+        if (error) {
+            showError(`Erro ao verificar nome de usuário: ${error.message}`);
+            return;
+        }
+        
+        if (data && data.length > 0) {
+            form.setError('username', {
+                type: 'manual',
+                message: 'Este nome de usuário já está em uso.',
+            });
+            return;
+        }
+    }
+
 
     // Convert empty strings back to null for optional database fields
     const payload = {
@@ -89,6 +125,7 @@ const ProfileSettingsForm: React.FC<ProfileSettingsFormProps> = ({ initialProfil
       store_hours: values.store_hours || null,
       address: values.address || null,
       sales_pitch: values.sales_pitch || null,
+      username: values.username || null, // Salvando username
       updated_at: new Date().toISOString(),
     };
 
@@ -130,6 +167,31 @@ const ProfileSettingsForm: React.FC<ProfileSettingsFormProps> = ({ initialProfil
         
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 mt-6">
+            <h3 className="text-lg font-semibold pt-4 border-t">Identificação Pública</h3>
+            
+            <FormField
+              control={form.control}
+              name="username"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Nome de Usuário (URL Pública)</FormLabel>
+                  <FormControl>
+                    <div className="flex items-center">
+                        <span className="text-sm text-muted-foreground mr-2">/u/</span>
+                        <Input 
+                            placeholder="seu_nome_unico" 
+                            {...field} 
+                            value={field.value || ""}
+                            // Garante que o valor seja minúsculo ao digitar
+                            onChange={(e) => field.onChange(e.target.value.toLowerCase())}
+                        />
+                    </div>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
             <h3 className="text-lg font-semibold pt-4 border-t">Informações Básicas</h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <FormField

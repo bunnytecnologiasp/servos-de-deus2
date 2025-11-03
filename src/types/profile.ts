@@ -8,6 +8,7 @@ export interface Profile {
   store_hours: string | null;
   address: string | null;
   sales_pitch: string | null;
+  username: string | null; // Novo campo
 }
 
 export interface PublicProfile {
@@ -19,4 +20,5 @@ export interface PublicProfile {
   store_hours: string | null;
   address: string | null;
   sales_pitch: string | null;
+  username: string | null; // Novo campo
 }
